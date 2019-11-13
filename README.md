@@ -1,7 +1,7 @@
 # Cleaner
 Autonomous cleaner with environment mapping and device tracker features using low cost components 
 
-**Authors: Vinícius Vaz and Nathan Marcelino**
+**Authors: Vinícius Vaz and [Nathan Marcelino](https://github.com/nathan-vm)**
 
 ## Dependencies
 
