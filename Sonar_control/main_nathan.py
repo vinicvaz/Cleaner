@@ -33,7 +33,7 @@ motor_1.set_motors()
 motor_2 = Setup_robo(6,16,26)
 motor_2.set_motors()
 ### SONAR ####
-sonar = Sonar.Sonar(22,27) ## pinos gpio sonar
+sonar = SonarClass(22,27) ## pinos gpio sonar
 ### CONTROLE ####
 controle = controle_facil(encoder_1,encoder_2,SAMPLE_TIME,motor_1,motor_2)
 #################
@@ -44,5 +44,5 @@ while True:
 		controle.set_Direction("backward")
 		time.sleep(2)
 		controle.set_Direction("left")
-	if (distanciaCM > 40 or distanciaCM < 2)
+	elif (distanciaCM > 40 or distanciaCM < 2):
 		controle.set_Direction("forward")

@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import gpiozero
 import time
-import controle_facil
+import control_robo
 
 class Setup_robo:
 

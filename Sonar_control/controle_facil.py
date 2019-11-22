@@ -3,7 +3,7 @@ import time
 import read_RPM
 import threading
 import setup_robo
-from Gyro_new import Gyro
+#from Gyro_new import Gyro
 
 class controle_facil():
 	"""docstring for controle_facil"""
@@ -14,6 +14,13 @@ class controle_facil():
 		self.motor_1 = motor_1
 		self.motor_2 = motor_2
 		self.TARGET = 80 # USE ONLY WITH PID ENCODER CONTROL
+
+		# SETUP PWM
+		self.p = GPIO.PWM(self.motor_1.enable, 1000)
+		self.p2 = GPIO.PWM(self.motor_2.enable, 1000)
+
+		self.p.start(20)
+		self.p2.start(20)
 
 	def set_Direction(self, string_opcao):
 		temp1 = 1
@@ -59,7 +66,7 @@ class controle_facil():
 			GPIO.output(self.motor_2.in1, GPIO.LOW)
 			GPIO.output(self.motor_2.in2, GPIO.HIGH)
 
-		elif x == "left":
+		elif self.select == "left":
 			print("axis rotation left")
 			##LEFT MOTOR
 			GPIO.output(self.motor_1.in1, GPIO.LOW)

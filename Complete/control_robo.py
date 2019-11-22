@@ -5,14 +5,15 @@ import threading
 import setup_robo
 import sys
 import multiprocessing
-from Gyro_new import Gyro
+from Sonar import *
+#from Gyro_new import Gyro
 
 
 #from mpu6050 import mpu6050
 
 class Control_robo:
 
-    def __init__(self, encoder_1, encoder_2, SAMPLE_TIME, motor_1, motor_2):
+    def __init__(self, encoder_1, encoder_2, SAMPLE_TIME, motor_1, motor_2, sonar):
 
         self.encoder_1 = encoder_1 ## LEFT ENCODER
         self.encoder_2 = encoder_2 ## RIGHT ENCODER
@@ -38,6 +39,9 @@ class Control_robo:
         
         self.select = 'p'
 
+        self.sonar = sonar
+        self.distance = 50
+
     #PID CONTROL FOR RPM ONLY
     def background(self):
 
@@ -46,6 +50,16 @@ class Control_robo:
             thread1 = threading.Thread(target = pid_control, args = (self,))
             thread1.daemon = True
             thread1.start()
+            print("Starting Thread 2")
+            thread2 = threading.Thread(target = distance, args = (self,))
+            thread2.daemon = True
+            thread2.start()
+
+        def distance(self):
+            while True:
+                self.distance = self.sonar.getDistance()
+                time.sleep(self.SAMPLE_TIME/10)
+                print("Distance: ", self.distance)
 
 
         def pid_control(self):
@@ -55,7 +69,6 @@ class Control_robo:
             #KP = 0.02
             #KD = 0.01
             #KI = 0.0001
-
 
             ## PID RPM DATA
             KP = 0.05
@@ -70,7 +83,7 @@ class Control_robo:
             e2_sum_error = 0
             
             while True:
-        
+            
                 RPM = self.encoder_1.RPM()
                 RPM_2 = self.encoder_2.RPM()
                 print("MOTOR 1 ={}".format(int(RPM+0.5)))
@@ -95,7 +108,6 @@ class Control_robo:
                 elif self.select in ('a', 'h','l','m'):
                     self.duty_2_value = self.duty_2_value + (e2_error * KP) + (e2_prev_error * KD) + (e2_sum_error * KI)
 
-
                 ## DISCARD DUTY OVER 100 OR LESS THAN 0
                 self.duty_1_value = max(min(100,self.duty_1_value), 0)
                 self.duty_2_value = max(min(100, self.duty_2_value), 0)
@@ -108,12 +120,16 @@ class Control_robo:
                 self.p2.ChangeDutyCycle(self.duty_2_value)
 
                 
-                time.sleep(self.SAMPLE_TIME/100) ## change the frequency 
+                time.sleep(self.SAMPLE_TIME/10) ## change the frequency 
+
+                
                 ## SET PREVIOUS ERROR
                 e1_prev_error = e1_error
                 e2_prev_error = e2_error
 
+                ### IF STOP DONT INCREASE ERROR
                 ## INTEGRAL ERROR
+                #if self.select != 'p':
                 e1_sum_error += e1_error
                 e2_sum_error += e2_error
 
@@ -162,8 +178,8 @@ class Control_robo:
             ##RIGHT MOTOR
             GPIO.output(self.motor_2.in1, GPIO.LOW)
             GPIO.output(self.motor_2.in2, GPIO.LOW)
-            self.duty_1_value = 10
-            self.duty_2_value = 10
+            self.duty_1_value = 15
+            self.duty_2_value = 15
             self.select = 'p'
             x='z'
 

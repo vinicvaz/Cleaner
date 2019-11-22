@@ -14,7 +14,7 @@ class SonarClass:
             GPIO.setup(self.PIN_ECHO, GPIO.IN)
 
             GPIO.output(self.PIN_TRIGGER, GPIO.LOW)
-            time.sleep(2)
+            #time.sleep(2) ? why this?
 
       def getDistance(self):
 
