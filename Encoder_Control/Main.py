@@ -52,11 +52,11 @@ print("r-run p-stop w-forward s-backward a-turn lef d-turn right g-axis rotation
 print("\n")
 
 
-#controle.background() ## call PID encoder control only
+controle.background() ## call PID encoder control only
 
-controle.background_2() ## call PID encoder + gyro control
+#controle.background_2() ## call PID encoder + gyro control
 
-start = time.time()
+
 while (1):
     
     x = input()
