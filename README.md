@@ -18,7 +18,7 @@ sudo pigpiod
 
 4. You should have installed Processing 3 to plot the 3D visualization of the robot.
 You can find here:  
-[Processing Download] (https://www.processing.org/download/)
+[Processing Download](https://www.processing.org/download/)
 
 
 ## Documentation
