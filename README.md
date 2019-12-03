@@ -16,8 +16,7 @@ College project to develop an autonomous vacuum cleaner with route tracking and 
 sudo pigpiod
 ```
 
-4. You should have installed Processing 3 to plot the 3D visualization of the robot.
-You can find here:  
+4. You should have installed Processing 3 to plot the 3D visualization of the robot.  
 [Processing Download](https://www.processing.org/download/)
 
 
