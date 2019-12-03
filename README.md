@@ -1,10 +1,10 @@
 # Cleaner
-Autonomous cleaner with environment mapping and device tracker features using low cost components 
-
 **Authors: Vinícius Vaz and [Nathan Marcelino](https://github.com/nathan-vm)**
 
+
 ## Description
-College project to develop an autonomous vacuum cleaner with route tracking and 2D environment mapping using low cost sensor and motors.
+Autonomous cleaner with 2D environment mapping and device tracker features using low cost components 
+
 
 ## Dependencies
 
