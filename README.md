@@ -23,6 +23,13 @@ sudo pigpiod
 
 You can find the partial report PDF (pt-BR) on GIT
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue or send us an email to discuss what you would like to change.
+
+## Support
+If you need some support we will be glad to help. 
+Send us an email or use issues tracker to contact.
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
