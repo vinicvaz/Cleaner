@@ -16,7 +16,7 @@ Autonomous cleaner with 2D environment mapping and device tracker features using
 sudo pigpiod
 ```
 
-4. You should have installed Processing 3 to plot the 3D visualization of the robot.  
+4. You should have installed Processing to run the client and plot the 3D visualization of the robot.  
 [Processing Download](https://www.processing.org/download/)
 
 
