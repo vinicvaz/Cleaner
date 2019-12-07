@@ -42,10 +42,18 @@ class Control_Class:
 	def movement(self):
 		print("Started with direction: ", self.direction)
 
+		'''
+		Directions Tuples
+		Foward = (True, False)
+		Backward = (False, True)
+		Right = (False, False)
+		Left = () 
+		'''
+
 
 		## Start Movement Loop ##
 		while True:
-
+			print("")
 			self.distance = self.sonar.getDistance()
 			## Check if Distance is greater than minimun ##
 			if self.distance > self.min_distance:
@@ -61,7 +69,7 @@ class Control_Class:
 				#steptype="half", initdelay=.001)
 					self.motor_1.motor_run(self.motor_1_pins,.001, 1,True,
 		                  False,"half",0) ## 1 Step for motor 1 
-					self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,
+					self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
 		                  False,"half",0) ## 1 step for motor 2
 					time.sleep(0.005)
 				self.direction = 's'
@@ -81,7 +89,7 @@ class Control_Class:
 					for i in range(512):
 						self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,
 			                  False,"half",0) ## 1 Step for motor 1 
-						self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
+						self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,
 			                  False,"half",0) ## 1 step for motor 2
 						time.sleep(0.005)
 					self.direction='d'
@@ -93,11 +101,12 @@ class Control_Class:
 				if self.direction == 'd':
 					print('Start Turning: ', self.direction)
 					for i in range(64):
-						self.motor_1.motor_run(self.motor_1_pins,.001, 1,True,
+						self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,
 			                  False,"half",0) ## 1 Step for motor 1 
 						self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
 			                  False,"half",0) ## 1 step for motor 2
-						time.sleep(0.005)				
+				
+
 
 
 
