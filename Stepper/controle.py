@@ -21,7 +21,7 @@ class Control_Class:
 		self.distance = sonar.getDistance()
 		self.direction = 'n' ## w = foward, s=backward, d=right turn, l=left turn, p=stop, n=none
 		###### Fix Values ######
-		self.min_distance = 40
+		self.min_distance = 20
 
 
 
@@ -53,7 +53,7 @@ class Control_Class:
 
 		## Start Movement Loop ##
 		while True:
-			print("")
+			print("Direction: ", self.direction)
 			self.distance = self.sonar.getDistance()
 			## Check if Distance is greater than minimun ##
 			if self.distance > self.min_distance:
@@ -71,11 +71,10 @@ class Control_Class:
 		                  False,"half",0) ## 1 Step for motor 1 
 					self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
 		                  False,"half",0) ## 1 step for motor 2
-					time.sleep(0.005)
 				self.direction = 's'
 				print("Distance less than minimun, going backward and turn")
 
-			time.sleep(0.05)
+			#time.sleep(0.05)
 			self.distance = self.sonar.getDistance() ## Check Distance Again
 			
 			####################################################################
@@ -85,19 +84,19 @@ class Control_Class:
 				print("Avoiding Mode On")
 
 				if self.direction == 's':
-					print("Going backward 1 wheel turn")
-					for i in range(512):
-						self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,
+					print("Going backward 1/2 wheel turn")
+					for i in range(256):
+						self.motor_1.motor_run(self.motor_1_pins,.005, 1,False,
 			                  False,"half",0) ## 1 Step for motor 1 
-						self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,
+						self.motor_2.motor_run(self.motor_2_pins,.005, 1,True,
 			                  False,"half",0) ## 1 step for motor 2
-						time.sleep(0.005)
+						
 					self.direction='d'
 
 				self.distance = self.sonar.getDistance() ## Check Distance Again
 				print("Distance: ", self.distance)
 
-				## Turn 45 degrees ##
+				## Turn 45 degrees to Right##
 				if self.direction == 'd':
 					print('Start Turning: ', self.direction)
 					for i in range(64):
