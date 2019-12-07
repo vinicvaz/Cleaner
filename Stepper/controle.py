@@ -21,8 +21,7 @@ class Control_Class:
 		self.distance = sonar.getDistance()
 		self.direction = 'n' ## w = foward, s=backward, d=right turn, l=left turn, p=stop, n=none
 		###### Fix Values ######
-		self.min_distance = 45
-		self.car_size = 30
+		self.min_distance = 40
 
 
 
@@ -43,13 +42,16 @@ class Control_Class:
 	def movement(self):
 		print("Started with direction: ", self.direction)
 
+
+		## Start Movement Loop ##
 		while True:
 
 			self.distance = self.sonar.getDistance()
-			## Check if Distance
+			## Check if Distance is greater than minimun ##
 			if self.distance > self.min_distance:
 				self.direction = 'w'
 
+			## If distance > min, than move fowards ##
 			if self.distance > self.min_distance and self.direction == 'w':
 				while self.distance > self.min_distance:
 
@@ -57,7 +59,6 @@ class Control_Class:
 				## Method Atributes
 				#gpiopins, wait=.001, steps=512, ccwise=False,verbose=False, 
 				#steptype="half", initdelay=.001)
-
 					self.motor_1.motor_run(self.motor_1_pins,.001, 1,True,
 		                  False,"half",0) ## 1 Step for motor 1 
 					self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,
@@ -67,11 +68,16 @@ class Control_Class:
 				print("Distance less than minimun, going backward and turn")
 
 			time.sleep(0.05)
-			self.distance = self.sonar.getDistance() ## Check Distance
+			self.distance = self.sonar.getDistance() ## Check Distance Again
+			
+			####################################################################
+			### Check if distance is
 
 			if self.distance < self.min_distance and self.direction!='p':
-				print("Going backward 1 wheel turn")
+				print("Avoiding Mode On")
+
 				if self.direction == 's':
+					print("Going backward 1 wheel turn")
 					for i in range(512):
 						self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,
 			                  False,"half",0) ## 1 Step for motor 1 
@@ -79,11 +85,13 @@ class Control_Class:
 			                  False,"half",0) ## 1 step for motor 2
 						time.sleep(0.005)
 					self.direction='d'
-				self.distance = self.sonar.getDistance()
+
+				self.distance = self.sonar.getDistance() ## Check Distance Again
 				print("Distance: ", self.distance)
-				print('Start Turning: ', self.direction)
+
 				## Turn 45 degrees ##
 				if self.direction == 'd':
+					print('Start Turning: ', self.direction)
 					for i in range(64):
 						self.motor_1.motor_run(self.motor_1_pins,.001, 1,True,
 			                  False,"half",0) ## 1 Step for motor 1 
