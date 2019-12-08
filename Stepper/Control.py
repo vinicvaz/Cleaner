@@ -29,7 +29,7 @@ class Control_Class:
 		self.distance = sonar.getDistance() ## Distance from center sonar
 		self.distance_dict['center'] = self.sonar_servo.getDistance() ## Distance from servo sonar
 		#self.servo_checking = False ## If true, servo is checking wich side turn
-		self.direction = 'n' ## w = foward, s=backward, d=right turn, l=left turn, p=stop, n=none
+		self.direction = 'n' ## foward, center (backward), right, left, pause, n=none
 		###### Fix Values ######
 		self.min_distance = 20
 		
@@ -55,11 +55,11 @@ class Control_Class:
 		### If distance less than min distance device will not start
 		if self.distance < self.min_distance or self.distance_dict['center']<self.min_distance:
 			print("No way to move foward")
-			self.direction = 'p'
+			self.direction = 'pause'
 			self.moves()
 		else:
 			print("Starting movement Foward") ## Else start moving foward
-			self.direction = 'w'
+			self.direction = 'foward'
 			self.moves()
 
 	def moves(self):
@@ -67,23 +67,52 @@ class Control_Class:
 		while True:
 			self.distance = self.sonar.getDistance()
 			self.distance_dict['center'] = self.sonar_servo.getDistance()
+			if self.distance > self.min_distance and self.distance_dict['center']>self.min_distance:
+				self.direction = 'foward'
 
-			if self.distance > self.min_distance and self.distance_dict['center']> self.min_distance and self.direction == 'w':
+			if self.distance > self.min_distance and self.distance_dict['center']> self.min_distance and self.direction == 'foward':
 				self.move_foward()
 			elif self.direction == 'right':
 				self.move_right()
 			elif self.direction == 'left':
 				self.move_left()
+			elif self.distance < self.min_distance and self.direction == 'center':
+				self.move_backward()
 			else:
 				self.direction = self.stop_movement()
 
 
 	def move_foward(self):
 
+
+		## Moves both motor foward ##
 		self.motor_1.motor_run(self.motor_1_pins,.001, 1,True, 
 			False,"half",0) ## 1 Step Foward for motor 1 
 		self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
 		    False,"half",0) ## 1 step Foward for motor 2
+
+	def move_right(self):
+		## Moves right 45 degrees ##
+		print("Turning Right 45 degrees")
+		for i in range(64):
+			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, False,"half",0)
+			self.motor_2.motor_run(self.motor_2_pins,.001, 1,False, False,"half",0)
+
+
+	def move_left(self):
+		## Moves left 45 degrees ##
+		print('Turning Left 45 degrees')
+		for i in range(64):
+			self.motor_1.motor_run(self.motor_1_pins,.001, 1,True, False,"half",0)
+			self.motor_2.motor_run(self.motor_2_pins,.001, 1,True, False,"half",0)
+
+	def move_backward(self):
+		## Moves both motor backward half turn ##
+		print("Moving backward")
+		for i in range(256):
+			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,False,"half",0)
+			self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,False,"half",0)
+
 
 		
 		
@@ -118,10 +147,14 @@ class Control_Class:
 		print("Center Distance:", self.distance_dict['center'])
 		time.sleep(0.5)
 
+		max_value = max(self.distance_dict.values())
+		## Check value key in dict to return
+		for key, value in self.distance_dict.items():
+			if value == max_value:
+				side = key
 
-		print("Max distance is to", max(self.distance_dict),",value:", max(self.distance_dict.values()))
-		return max(self.distance_dict)
-
+		print("Max distance is to",side,",value:", max(self.distance_dict.values()))
+		return side
 
 
 	
