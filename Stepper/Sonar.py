@@ -7,7 +7,7 @@ class SonarClass:
 
       def __init__(self,echo,trigger):
             GPIO.setmode(GPIO.BCM)
-            
+
             self.PIN_TRIGGER = trigger
             self.PIN_ECHO = echo
 
@@ -31,3 +31,5 @@ class SonarClass:
             pulse_duration = pulse_end_time - pulse_start_time
             distance = round(pulse_duration * 17150, 2)
             return distance
+
+      

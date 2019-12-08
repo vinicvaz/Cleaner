@@ -47,6 +47,4 @@ class Servo_Class:
 		        GPIO.cleanup()
 
 
-servo = Servo_Class(13)
 
-servo.input_angle()

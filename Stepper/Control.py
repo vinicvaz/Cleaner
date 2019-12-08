@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 from RpiMotorLib import RpiMotorLib
+import numpy as np
 
 class Control_Class:
 
@@ -18,13 +19,109 @@ class Control_Class:
 		######################
 		###### Servo Init ####
 		self.servo = servo
+		self.servo.set_angle(90)
 
 
 		###### Variables #####
 		self.turn = 64 ## Steps to Turn
+		self.distance_dict = {'right':None, 'center':None,'left':None} ## Servo Distance Dict
 		self.servo_angle = {"right":0,"center":90,"left":180} ## Servo Angle Dict
-		self.distance = sonar.getDistance()
+		self.distance = sonar.getDistance() ## Distance from center sonar
+		self.distance_dict['center'] = self.sonar_servo.getDistance() ## Distance from servo sonar
+		#self.servo_checking = False ## If true, servo is checking wich side turn
 		self.direction = 'n' ## w = foward, s=backward, d=right turn, l=left turn, p=stop, n=none
 		###### Fix Values ######
-		self.min_distance = 15
-		self.warning_distance = 25
+		self.min_distance = 20
+		
+
+
+
+	def sonar_mean(self, sonar):
+		array = []
+		for i in range(5):
+			self.distance = sonar.getDistance()
+			array.append(self.distance)
+		return np.mean(array)
+
+
+	def start_movement(self):
+		print('Checking Distance to Move')
+		## Get 3 reads of sonar
+		self.distance = self.sonar_mean(self.sonar)
+		self.distance_dict['center'] = self.sonar_mean(self.sonar_servo)
+		print('Distance: ',self.distance)
+		print('Servo Distance:', self.distance_dict['center'])
+
+		### If distance less than min distance device will not start
+		if self.distance < self.min_distance or self.distance_dict['center']<self.min_distance:
+			print("No way to move foward")
+			self.direction = 'p'
+			self.moves()
+		else:
+			print("Starting movement Foward") ## Else start moving foward
+			self.direction = 'w'
+			self.moves()
+
+	def moves(self):
+
+		while True:
+			self.distance = self.sonar.getDistance()
+			self.distance_dict['center'] = self.sonar_servo.getDistance()
+
+			if self.distance > self.min_distance and self.distance_dict['center']> self.min_distance and self.direction == 'w':
+				self.move_foward()
+			elif self.direction == 'right':
+				self.move_right()
+			elif self.direction == 'left':
+				self.move_left()
+			else:
+				self.direction = self.stop_movement()
+
+
+	def move_foward(self):
+
+		self.motor_1.motor_run(self.motor_1_pins,.001, 1,True, 
+			False,"half",0) ## 1 Step Foward for motor 1 
+		self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
+		    False,"half",0) ## 1 step Foward for motor 2
+
+		
+		
+
+
+	def stop_movement(self):
+
+		print("Stopped movement, starting Servo Checking")
+
+		self.distance_dict = {'right':None,'center':None,'left':None} ## Clean Distance Dict
+		##### Checking Servo ####
+		#####  Looks right  #####
+		self.servo.set_angle(self.servo_angle['right'])
+		time.sleep(0.5)
+		self.distance_dict['right'] = self.sonar_mean(self.sonar_servo) ## Get Distance Right
+		print("Distance Right: ", self.distance_dict['right'])
+		time.sleep(0.5)
+
+		########################
+		#####  Looks Left  #####
+		self.servo.set_angle(self.servo_angle['left'])
+		time.sleep(0.5)
+		self.distance_dict['left'] = self.sonar_mean(self.sonar_servo) ## Get Distance Left
+		print("Distance Left:", self.distance_dict['left'])
+		time.sleep(0.5)
+
+		#######################
+		##### Looks Foward ####
+		self.servo.set_angle(self.servo_angle['center'])
+		time.sleep(0.5)
+		self.distance_dict['center'] = self.sonar_mean(self.sonar_servo) ## Get Foward distance
+		print("Center Distance:", self.distance_dict['center'])
+		time.sleep(0.5)
+
+
+		print("Max distance is to", max(self.distance_dict),",value:", max(self.distance_dict.values()))
+		return max(self.distance_dict)
+
+
+
+	

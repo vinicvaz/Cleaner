@@ -3,7 +3,7 @@ import time
 from RpiMotorLib import RpiMotorLib
 from Control import Control_Class
 from Sonar import SonarClass
-from Servo import ServoClass
+from Servo import Servo_Class
 
 ## in1,in2,in3,in4 
 GPIO_PINS_1 = [25,24,23,6] ## Motor 1 Pins
@@ -21,10 +21,9 @@ sonar = SonarClass(22,27) ## Sonar Pins
 sonar_servo = SonarClass(17,18) ## Sonar Servo PIns
 
 ###### Setup Servo ######
-servo = ServoClass(13)
+servo = Servo_Class(13)
 
 control = Control_Class(motor_1,motor_2,[25,24,23,6],[26,16,5,12],sonar, sonar_servo, servo)
 
-#control.start_movement()
+control.start_movement()
 
-#control.movement()
