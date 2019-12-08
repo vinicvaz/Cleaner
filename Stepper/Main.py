@@ -4,6 +4,7 @@ from RpiMotorLib import RpiMotorLib
 from Control import Control_Class
 from Sonar import SonarClass
 from Servo import Servo_Class
+import threading
 
 ## in1,in2,in3,in4 
 GPIO_PINS_1 = [25,24,23,6] ## Motor 1 Pins
@@ -24,6 +25,7 @@ sonar_servo = SonarClass(17,18) ## Sonar Servo PIns
 servo = Servo_Class(13)
 
 control = Control_Class(motor_1,motor_2,[25,24,23,6],[26,16,5,12],sonar, sonar_servo, servo)
+
 
 control.start_movement()
 

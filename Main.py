@@ -33,12 +33,13 @@ encoder_2 = read_RPM.reader(pi2, RPM_GPIO_2)
 ###################
 
 ### SETUP MOTORS BCM PINS (EN, IN1, IN2) ###
-
+##Right Motor
 motor_1 = Setup_robo(25,24,23)
 motor_1.set_motors()
 
 
 #### SET MOTOR 2 ###
+## Left Motor
 motor_2 = Setup_robo(6,16,26)
 motor_2.set_motors()
 
