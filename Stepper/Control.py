@@ -30,6 +30,7 @@ class Control_Class:
 		self.distance_dict['center'] = self.sonar_servo.getDistance() ## Distance from servo sonar
 		#self.servo_checking = False ## If true, servo is checking wich side turn
 		self.direction = 'n' ## foward, backward, right, left, pause, n=none
+		self.last_direction = 'n'
 		###### Fix Values ######
 		self.min_distance = 20
 		self.warning_distance = 30
@@ -69,11 +70,10 @@ class Control_Class:
 			self.distance = self.sonar.getDistance()
 			self.distance_dict['center'] = self.sonar_servo.getDistance()
 
-			if self.direction == 'center' and self.distance>self.min_distance:
-				if self.distance > self.min_distance and self.distance_dict['center']>self.min_distance:
-					self.direction = 'foward'
-				else:
-					self.direction = 'backward'
+			#if self.direction == 'center' and self.distance>self.min_distance:
+			#if self.distance > self.min_distance and self.distance_dict['center']>self.min_distance:
+			if self.direction == 'center':
+				self.direction = 'foward'
 
 			if self.distance > self.min_distance and self.distance_dict['center']> self.min_distance and self.direction =='foward':
 				self.move_foward()
@@ -85,9 +85,6 @@ class Control_Class:
 				self.move_backward()
 			else:
 				self.direction = self.stop_movement()
-			#print(self.direction)
-			print()
-
 			
 
 
@@ -101,28 +98,58 @@ class Control_Class:
 		    False,"half",0) ## 1 step Foward for motor 2
 
 	def move_right(self):
-		## Moves right 45 degrees ##
-		print("Turning Right")
-		for i in range(128):
-			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, False,"half",0)
-			self.motor_2.motor_run(self.motor_2_pins,.001, 1,False, False,"half",0)
-			self.direction = 'center'
+		## Moves right ##
 
+
+		##### Check if have anything left ###
+		self.servo.set_angle(self.servo_angle['left'])
+		time.sleep(0.5)
+		self.distance_dict['left'] == self.sonar_mean(self.sonar_servo)
+		time.sleep(0.5)
+		self.servo.set_angle(self.servo_angle['center'])
+
+		print("TO NO RIGHT")
+		##### If have way left, turn nose right ##
+		if self.distance_dict['left'] > self.min_distance:
+		
+			for i in range(256):
+				self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, False,"half",0)
+				self.motor_2.motor_run(self.motor_2_pins,.001, 1,False, False,"half",0)
+			self.last_direction = 'right'
+			self.direction = 'center'
+		else:
+			self.last_direction='right'
+			self.direction = 'backward'
 
 	def move_left(self):
-		## Moves left 45 degrees ##
-		print('Turning Left')
-		for i in range(128):
-			self.motor_1.motor_run(self.motor_1_pins,.001, 1,True, False,"half",0)
-			self.motor_2.motor_run(self.motor_2_pins,.001, 1,True, False,"half",0)
+		######### Moves left  ######### 
+
+		##### Check if have anything right ###
+		self.servo.set_angle(self.servo_angle['right'])
+		time.sleep(0.5)
+		self.distance_dict['right'] == self.sonar_mean(self.sonar_servo)
+		time.sleep(0.5)
+		self.servo.set_angle(self.servo_angle['center'])
+		print("TO NO LEFT")
+		##### If have way right, turn nose left ##
+		if self.distance_dict['right'] > self.min_distance:
+			for i in range(256):
+				self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, True,"half",0)
+				self.motor_2.motor_run(self.motor_2_pins,.001, 1,False, True,"half",0)
+			self.last_direction = 'left'
 			self.direction = 'center'
+		else:
+			self.last_direction='left'
+			self.direction = 'backward'
+
 
 	def move_backward(self):
 		## Moves both motor backward half turn ##
 		print("Moving backward")
-		for i in range(128):
+		for i in range(512):
 			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,False,"half",0)
 			self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,False,"half",0)
+			self.direction = self.last_direction
 
 
 		
@@ -136,6 +163,7 @@ class Control_Class:
 		self.distance_dict = {'right':None,'center':None,'left':None} ## Clean Distance Dict
 		##### Checking Servo ####
 		#####  Looks right  #####
+		#time.sleep(0.5)
 		self.servo.set_angle(self.servo_angle['right'])
 		time.sleep(0.5)
 		self.distance_dict['right'] = self.sonar_mean(self.sonar_servo) ## Get Distance Right
@@ -156,7 +184,6 @@ class Control_Class:
 		time.sleep(0.5)
 		self.distance_dict['center'] = self.sonar_mean(self.sonar_servo) ## Get Foward distance
 		print("Center Distance:", self.distance_dict['center'])
-		time.sleep(0.5)
 
 		max_value = max(self.distance_dict.values())
 		## Check value key in dict to return
@@ -164,9 +191,19 @@ class Control_Class:
 			if value == max_value:
 				side = key
 
+
 		print("Max distance is to",side,",value:", max(self.distance_dict.values()))
+		self.distance = self.sonar_mean(self.sonar)
 
-		return side
+		if side != 'center':
+			self.last_direction = side
 
+		if self.distance_dict['center']>max_value and self.distance>max_value:
+			return 'center'
+		elif self.distance_dict['left'] <= 7 or self.distance_dict['right'] <= 7 or self.distance_dict['center'] <= 7:
+			return 'backward'
+		else:
+			self.last_direction = side
+			return side
 
 	
