@@ -10,5 +10,8 @@ GPIO_PINS_2 = [26,16,5,12] ## Motor 2 Pins
 motor_1 = RpiMotorLib.BYJMotor("Motor1", "28BYJ")
 motor_2 = RpiMotorLib.BYJMotor("Motor2", "28BYJ")
 
-motor_1.motor_run(gpiopins=GPIO_PINS_1, wait=.001, steps=512, ccwise=False,
-                  verbose=True, steptype="half", initdelay=.001)
+for i in range(512):
+	motor_1.motor_run(gpiopins=GPIO_PINS_1, wait=.01, steps=1, ccwise=False,
+	                  verbose=True, steptype="half", initdelay=0)
+	motor_2.motor_run(gpiopins=GPIO_PINS_2, wait=.01, steps=1, ccwise=True,
+	                  verbose=True, steptype="half", initdelay=.0)
