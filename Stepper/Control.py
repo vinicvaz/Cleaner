@@ -109,8 +109,9 @@ class Control_Class:
 		self.servo.set_angle(self.servo_angle['center'])
 
 		print("TO NO RIGHT")
+		print(self.distance_dict['left'])
 		##### If have way left, turn nose right ##
-		if self.distance_dict['left'] > self.min_distance:
+		if self.distance_dict['left'] > self.min_distance-5:
 		
 			for i in range(256):
 				self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, False,"half",0)
@@ -134,8 +135,8 @@ class Control_Class:
 		##### If have way right, turn nose left ##
 		if self.distance_dict['right'] > self.min_distance:
 			for i in range(256):
-				self.motor_1.motor_run(self.motor_1_pins,.001, 1,False, True,"half",0)
-				self.motor_2.motor_run(self.motor_2_pins,.001, 1,False, True,"half",0)
+				self.motor_1.motor_run(self.motor_1_pins,.001, 1,True, False,"half",0)
+				self.motor_2.motor_run(self.motor_2_pins,.001, 1,True, False,"half",0)
 			self.last_direction = 'left'
 			self.direction = 'center'
 		else:
