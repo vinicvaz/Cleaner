@@ -2,6 +2,9 @@ import RPi.GPIO as GPIO
 import time
 from RpiMotorLib import RpiMotorLib
 import numpy as np
+import threading
+import serial
+import socket
 
 class Control_Class:
 
@@ -164,7 +167,6 @@ class Control_Class:
 		self.distance_dict = {'right':None,'center':None,'left':None} ## Clean Distance Dict
 		##### Checking Servo ####
 		#####  Looks right  #####
-		#time.sleep(0.5)
 		self.servo.set_angle(self.servo_angle['right'])
 		time.sleep(0.5)
 		self.distance_dict['right'] = self.sonar_mean(self.sonar_servo) ## Get Distance Right
@@ -202,9 +204,8 @@ class Control_Class:
 		if self.distance_dict['center']>max_value and self.distance>max_value:
 			return 'center'
 		elif self.distance_dict['left'] <= 7 or self.distance_dict['right'] <= 7 or self.distance_dict['center'] <= 7:
-			return 'backward'
+			return 'backward' ## VERIFICAR ESSA CONDIÇÃO
 		else:
 			self.last_direction = side
 			return side
-
 	

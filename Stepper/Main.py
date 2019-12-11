@@ -4,7 +4,19 @@ from RpiMotorLib import RpiMotorLib
 from Control import Control_Class
 from Sonar import SonarClass
 from Servo import Servo_Class
+from server_SOCKET_TCP import Server_Socket
+#from server_SOCKET_TCP import server_socket
 import threading
+import socket
+import serial
+import keyboard
+
+
+def teste_thread():
+	while True:
+		print("Teste")
+		time.sleep(2)
+
 
 ## in1,in2,in3,in4 
 GPIO_PINS_1 = [25,24,23,6] ## Motor 1 Pins
@@ -27,5 +39,20 @@ servo = Servo_Class(13)
 control = Control_Class(motor_1,motor_2,[25,24,23,6],[26,16,5,12],sonar, sonar_servo, servo)
 
 
-control.start_movement()
+
+print("Iniciando Thread")
+server = Server_Socket()
+thread_teste = threading.Thread(target = server.handler)
+thread_teste.daemon=True
+thread_teste.start()
+
+print("Press enter to start")
+
+x = input()
+if x=='':
+	control.start_movement()
+
+
+
+
 
