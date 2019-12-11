@@ -40,7 +40,6 @@ control = Control_Class(motor_1,motor_2,[25,24,23,6],[26,16,5,12],sonar, sonar_s
 
 
 
-print("Iniciando Thread")
 server = Server_Socket()
 thread_teste = threading.Thread(target = server.handler)
 thread_teste.daemon=True
