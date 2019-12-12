@@ -6,7 +6,7 @@ from control_robo import *
 import pigpio
 import threading
 import sys
-
+from test_server import server_socket
 ##PINS
 
 temp1 = 1
