@@ -15,10 +15,17 @@ class Client_Class:
 		self.tcp.connect(self.dest)
 
 		self.data = ''
+
+		### File Init ###
 		self.path = '//home//vinicius//Temp_Client//temp_client.txt'
-		self.file = open(self.path,'a+')
+		header = 'speed/distance/y/x/z\n'
+		self.file = open(self.path,'w+')  ## Open file to write (and overwrites)
+		self.file.write(header) ## Write the header on file
+		self.file.close() ## Closes file
 
 	def client_socket(self):
+
+		self.file = open(self.path, 'a+')
 
 		while True:
 			self.data = self.tcp.recv(1024)
@@ -38,7 +45,6 @@ class Client_Class:
 client = Client_Class()
 client.client_socket()
 
-
-#client.tcp.close()
+client.tcp.close()
 
 
