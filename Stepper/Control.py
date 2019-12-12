@@ -15,6 +15,7 @@ class Control_Class:
 		self.motor_2 = motor_2
 		self.motor_1_pins = motor_1_pins
 		self.motor_2_pins = motor_2_pins
+		self.speed = 0.00
 		########################
 		###### Sonar Init ######
 		self.sonar = sonar
@@ -99,9 +100,11 @@ class Control_Class:
 			False,"half",0) ## 1 Step Foward for motor 1 
 		self.motor_2.motor_run(self.motor_2_pins,.001, 1,False,
 		    False,"half",0) ## 1 step Foward for motor 2
+		self.speed = 10
 
 	def move_right(self):
 		## Moves right ##
+		self.speed = 0
 
 
 		##### Check if have anything left ###
@@ -126,7 +129,8 @@ class Control_Class:
 			self.direction = 'backward'
 
 	def move_left(self):
-		######### Moves left  ######### 
+		######### Moves left  #########
+		self.speed = 0
 
 		##### Check if have anything right ###
 		self.servo.set_angle(self.servo_angle['right'])
@@ -149,6 +153,7 @@ class Control_Class:
 
 	def move_backward(self):
 		## Moves both motor backward half turn ##
+		self.speed = -10
 		print("Moving backward")
 		for i in range(512):
 			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,False,"half",0)
@@ -161,6 +166,8 @@ class Control_Class:
 
 
 	def stop_movement(self):
+
+		self.speed = 0
 
 		print("Stopped movement, starting Servo Checking")
 
