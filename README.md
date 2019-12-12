@@ -4,6 +4,7 @@
 
 ## Description
 Autonomous cleaner with 2D environment mapping and device tracker features using low cost components 
+The new version is being developed ate **Stepper** branch  
 
 
 ## Dependencies
@@ -18,6 +19,10 @@ sudo pigpiod
 
 4. You should have installed Processing to run the client and plot the 3D visualization of the robot.  
 [Processing Download](https://www.processing.org/download/)
+
+## Visual  
+**First Prototype**  
+![Prototype 1.0](https://i.imgur.com/jGsQePa.jpg)  
 
 
 ## Documentation
