@@ -41,22 +41,24 @@ class Control_Class:
 		
 
 
-
+	'''
 	def sonar_mean(self, sonar):
 		array = []
 		for i in range(5):
 			self.distance = sonar.getDistance()
 			array.append(self.distance)
 		return np.mean(array)
-
+	'''
 
 	def start_movement(self):
 		print('Checking Distance to Move')
 		## Get 3 reads of sonar
-		self.distance = self.sonar_mean(self.sonar)
-		self.distance_dict['center'] = self.sonar_mean(self.sonar_servo)
+		#self.distance = self.sonar_mean(self.sonar)
+		#self.distance_dict['center'] = self.sonar_mean(self.sonar_servo)
+		self.distance = self.sonar.getDistance()
+		self.distance_dict['center'] = self.sonar_servo.getDistance()
 		print('Distance: ',self.distance)
-		print('Servo Distance:', self.distance_dict['center'])
+		print('Servo Distance Center:', self.distance_dict['center'])
 
 		### If distance less than min distance device will not start
 		if self.distance < self.min_distance or self.distance_dict['center']<self.min_distance:
@@ -78,7 +80,8 @@ class Control_Class:
 			#if self.distance > self.min_distance and self.distance_dict['center']>self.min_distance:
 			if self.direction == 'center':
 				self.direction = 'foward'
-
+			print("Servo Distance:",self.distance_dict['center'])
+			print("Distance:",self.distance)
 			if self.distance > self.min_distance and self.distance_dict['center']> self.min_distance and self.direction =='foward':
 				self.move_foward()
 			elif self.direction == 'right':
@@ -110,12 +113,14 @@ class Control_Class:
 		##### Check if have anything left ###
 		self.servo.set_angle(self.servo_angle['left'])
 		time.sleep(0.5)
-		self.distance_dict['left'] == self.sonar_mean(self.sonar_servo)
+		#self.distance_dict['left'] == self.sonar_mean(self.sonar_servo)
+		self.distance_dict['left'] = self.sonar_servo.getDistance()
 		time.sleep(0.5)
 		self.servo.set_angle(self.servo_angle['center'])
 
 		print("TO NO RIGHT")
-		print(self.distance_dict['left'])
+		print("speed: ", self.speed)
+		print("Distance Left: ",self.distance_dict['left'])
 		##### If have way left, turn nose right ##
 		if self.distance_dict['left'] > self.min_distance-5:
 		
@@ -135,10 +140,12 @@ class Control_Class:
 		##### Check if have anything right ###
 		self.servo.set_angle(self.servo_angle['right'])
 		time.sleep(0.5)
-		self.distance_dict['right'] == self.sonar_mean(self.sonar_servo)
+		#self.distance_dict['right'] == self.sonar_mean(self.sonar_servo)
+		self.distance_dict['right'] = self.sonar_servo.getDistance()
 		time.sleep(0.5)
 		self.servo.set_angle(self.servo_angle['center'])
 		print("TO NO LEFT")
+		print("Distance Right:", self.distance_dict['right'])
 		##### If have way right, turn nose left ##
 		if self.distance_dict['right'] > self.min_distance:
 			for i in range(256):
@@ -159,6 +166,7 @@ class Control_Class:
 			self.motor_1.motor_run(self.motor_1_pins,.001, 1,False,False,"half",0)
 			self.motor_2.motor_run(self.motor_2_pins,.001, 1,True,False,"half",0)
 			self.direction = self.last_direction
+		print("Direction pos backward:",self.direction)
 
 
 		
@@ -176,7 +184,8 @@ class Control_Class:
 		#####  Looks right  #####
 		self.servo.set_angle(self.servo_angle['right'])
 		time.sleep(0.5)
-		self.distance_dict['right'] = self.sonar_mean(self.sonar_servo) ## Get Distance Right
+		#self.distance_dict['right'] = self.sonar_mean(self.sonar_servo) ## Get Distance Right
+		self.distance_dict['right'] = self.sonar_servo.getDistance() ## Get Distance Right
 		print("Distance Right: ", self.distance_dict['right'])
 		time.sleep(0.5)
 
@@ -184,7 +193,8 @@ class Control_Class:
 		#####  Looks Left  #####
 		self.servo.set_angle(self.servo_angle['left'])
 		time.sleep(0.5)
-		self.distance_dict['left'] = self.sonar_mean(self.sonar_servo) ## Get Distance Left
+		#self.distance_dict['left'] = self.sonar_mean(self.sonar_servo) ## Get Distance Left
+		self.distance_dict['left'] = self.sonar_servo.getDistance() ## Get Distance Left
 		print("Distance Left:", self.distance_dict['left'])
 		time.sleep(0.5)
 
@@ -192,7 +202,8 @@ class Control_Class:
 		##### Looks Foward ####
 		self.servo.set_angle(self.servo_angle['center'])
 		time.sleep(0.5)
-		self.distance_dict['center'] = self.sonar_mean(self.sonar_servo) ## Get Foward distance
+		#self.distance_dict['center'] = self.sonar_mean(self.sonar_servo) ## Get Foward distance
+		self.distance_dict['center'] = self.sonar_servo.getDistance()
 		print("Center Distance:", self.distance_dict['center'])
 
 		max_value = max(self.distance_dict.values())
@@ -203,7 +214,8 @@ class Control_Class:
 
 
 		print("Max distance is to",side,",value:", max(self.distance_dict.values()))
-		self.distance = self.sonar_mean(self.sonar)
+		#self.distance = self.sonar_mean(self.sonar)
+		self.distance = self.sonar.getDistance()
 
 		if side != 'center':
 			self.last_direction = side
