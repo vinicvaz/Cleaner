@@ -31,7 +31,7 @@ class Server_Socket:
 			data = str(self.control.speed) +'/'+str(self.control.distance)
 			data = data+'/'+self.ser.readline().decode('unicode_escape')
 			send_data = data.encode()
-			#print(send_data)
+			#print(data)
 			#print(self.ser.readline().decode('unicode_escape'))
 			#self.con.send(self.ser.readline())
 			self.con.send(send_data)
