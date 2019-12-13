@@ -2,6 +2,7 @@ import socket
 import serial 
 import threading
 import time
+import numpy as np
 
 
 class Server_Socket:
@@ -26,8 +27,9 @@ class Server_Socket:
 		#self.serv_socket.listen(1)
 		#self.con, self.addr = self.serv_socket.accept()
 		print('Sending Gyro/Accel Data')
+		
 		while True:
-
+			time_init = time.time()
 			data = str(self.control.speed) +'/'+str(self.control.distance)
 			data = data+'/'+self.ser.readline().decode('unicode_escape')
 			send_data = data.encode()

@@ -48,6 +48,7 @@ x = input()
 if x=='':
 	control.start_movement()
 
+print("ERRO")
 
 
 

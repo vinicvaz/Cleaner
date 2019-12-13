@@ -34,6 +34,7 @@ class SonarClass:
 
             pulse_duration = pulse_end_time - pulse_start_time
             distance = round(pulse_duration * 17150, 2)
-            return distance
+            if distance > 0:
+                  return distance
 
       
