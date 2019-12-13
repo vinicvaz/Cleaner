@@ -38,11 +38,14 @@ class Tracking_Class:
 				self.pos_dict['y'].append(pos_y)
 				print("Posicao X:",self.pos_dict['x'])
 				print("Posicao Y:",self.pos_dict['y'])
+				time.sleep(0.005)
 				
 				i+=1
-			else:
+			elif i>=len(self.reader.data.index):
 				print("VOLTEI A LER")
 				self.reader.update_data()
+			else:
+				pass
 
 #tracker = Tracking_Class()
 #tracker.tracking()	    
