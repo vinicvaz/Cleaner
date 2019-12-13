@@ -22,7 +22,10 @@ sudo pigpiod
 
 ## Visual  
 **First Prototype**  
-![Prototype 1.0](https://i.imgur.com/jGsQePa.jpg)  
+![Prototype 1.0](https://i.imgur.com/jGsQePa.jpg) 
+
+
+[**Video Demonstration**](https://www.youtube.com/watch?v=JpxavrqKcD0&feature=youtu.be)  
 
 
 ## Documentation
