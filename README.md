@@ -4,6 +4,7 @@
 
 ## Description
 Autonomous cleaner with 2D environment mapping and device tracker features using low cost components 
+The new version is being developed ate **Stepper** branch  
 
 
 ## Dependencies
@@ -21,7 +22,10 @@ sudo pigpiod
 
 ## Visual  
 **First Prototype**  
-![Prototype 1.0](https://i.imgur.com/jGsQePa.jpg)  
+![Prototype 1.0](https://i.imgur.com/jGsQePa.jpg) 
+
+
+[**Video Demonstration**](https://www.youtube.com/watch?v=JpxavrqKcD0&feature=youtu.be)  
 
 
 ## Documentation
