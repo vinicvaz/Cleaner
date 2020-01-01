@@ -4,7 +4,7 @@
 
 ## Description
 Autonomous cleaner with 2D environment mapping and device tracker features using low cost components 
-The new version is being developed at **Stepper** branch inside **Stepper** folder  
+The new version is being developed at **Stepper** branch in **Stepper** folder  
 
 
 ## Dependencies
